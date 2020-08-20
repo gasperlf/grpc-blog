@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package  blog;
+
+option java_package = "net.ontopsolutions.blog";
+option java_multiple_files = true;
+
+message Blog {
+  string id = 1;
+  string author_id = 2;
+  string title = 3;
+  string content = 4;
+}
+
+message BlogCreateRequest{
+  Blog  blog = 1; // The id shouldn't matter
+}
+
+message BlogCreateResponse {
+  Blog  blog = 1; // The id will correspond to the one MongoB
+}
+
+message BlogReadRequest {
+  string blogId = 1;
+}
+
+message BlogReadResponse{
+  Blog  blog = 1;
+}
+
+message BlogUpdateRequest{
+  Blog  blog = 1;
+}
+
+message BlogUpdateResponse{
+  Blog  blog = 1;
+}
+
+message BlogDeleteRequest{
+  string blogId = 1;
+}
+
+message BlogDeleteResponse{
+  bool result = 1;
+}
+
+message BlogListRequest{
+
+}
+
+message BlogListResponse{
+  Blog  blog = 1;
+}
+
+service BlogService {
+  rpc CreateBlog(BlogCreateRequest) returns (BlogCreateResponse) {};
+  rpc ReadBlog(BlogReadRequest) returns (BlogReadResponse) {};
+  rpc UpdateBlog(BlogUpdateRequest) returns (BlogUpdateResponse) {};
+  rpc DeleteBlog(BlogDeleteRequest) returns (BlogDeleteResponse) {};
+  rpc ListBlogs(BlogListRequest) returns (stream BlogListResponse){};
+
+}
