@@ -1,5 +1,6 @@
 .gradle
-.build
+build
+.idea
 
 .ssl/ca.crt
 .ssl/ca.key
