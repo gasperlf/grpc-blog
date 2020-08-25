@@ -9,11 +9,15 @@ import lombok.SneakyThrows;
 import net.ontopsolutions.blog.Blog;
 import net.ontopsolutions.blog.BlogCreateRequest;
 import net.ontopsolutions.blog.BlogCreateResponse;
+import net.ontopsolutions.blog.BlogListRequest;
+import net.ontopsolutions.blog.BlogListResponse;
 import net.ontopsolutions.blog.BlogReadRequest;
 import net.ontopsolutions.blog.BlogReadResponse;
 import net.ontopsolutions.blog.BlogServiceGrpc;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlogClient {
 
@@ -29,8 +33,8 @@ public class BlogClient {
 
     private void run(ManagedChannel channel) {
 
-        BlogServiceGrpc.BlogServiceBlockingStub stub = BlogServiceGrpc.newBlockingStub(channel);
-
+        BlogServiceGrpc.BlogServiceBlockingStub stub = BlogServiceGrpc
+                .newBlockingStub(channel);
         //createBlog(stub);
         readBlog(stub);
     }
@@ -58,6 +62,16 @@ public class BlogClient {
                 .build());
         System.out.println("Received create blog response");
         System.out.println(blogResponse.toString());
+    }
+
+    private void listBlog(BlogServiceGrpc.BlogServiceBlockingStub stub) {
+
+        List<BlogListResponse> listResponseList = new ArrayList<>();
+        stub.listBlogs(BlogListRequest.newBuilder().build())
+                .forEachRemaining(listResponseList::add);
+
+        listResponseList.stream().forEach(blogListResponse ->
+                System.out.printf(blogListResponse.getBlog().toString()));
     }
 
     @SneakyThrows
